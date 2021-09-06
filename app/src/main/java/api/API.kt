@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import java.lang.Exception
 
 // A networking API used within the app.
 //
@@ -36,8 +37,6 @@ interface API {
     )
 
     companion object {
-        // TODO: Instantiate an API object as follows to use within the app
-
         private const val baseURL = "https://jsonplaceholder.typicode.com/"
 
         /**
@@ -89,5 +88,8 @@ interface UserApi {
 // e.g. network timeout, badly formatted request or failing to decode/deserialize
 // a response could cause failure in a network request.
 //
-typealias FetchError = Any
+/**
+ * Class handles all network exception during api call
+ */
+class FetchError(var exception: Exception, val errorMessage: String?) : Exception(errorMessage, exception)
 

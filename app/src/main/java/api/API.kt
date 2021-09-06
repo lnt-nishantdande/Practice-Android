@@ -37,7 +37,7 @@ interface API {
 // Make sure to limit the data inside this data-type to whats required in the assignment.
 // Do not include any other information, e.g. phone number, zipcode... if its not required
 //
-typealias UsersList = Any
+// Add new UserList.kt file in package api
 
 // TODO (Bonus): Create a more specific error type.
 // This can help identify the nature of a particular failure case.

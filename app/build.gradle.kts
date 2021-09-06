@@ -64,6 +64,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
+    //View Model
+    implementation("android.arch.lifecycle:extensions:1.1.1")
+    implementation("android.arch.lifecycle:viewmodel:1.1.1")
+
+    // Just try jepack state
+    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
+
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")

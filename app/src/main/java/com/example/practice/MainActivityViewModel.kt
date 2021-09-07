@@ -35,7 +35,7 @@ class MainActivityViewModel : ViewModel() {
     fun fetchUserList(excludingUserId: String = ""){
 
         // Call Network Api to get user data
-        RetrofitAPI().fetchUsersList(excludingUserId, {
+        API.create().fetchUsersList(excludingUserId, {
 
             // Perform task in coroutine as operation it time consuming
             viewModelScope.launch(Dispatchers.IO) {

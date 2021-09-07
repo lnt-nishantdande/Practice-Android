@@ -39,40 +39,12 @@ interface API {
     companion object {
         private const val baseURL = "https://jsonplaceholder.typicode.com/"
 
-        /**
-         * Function will return UserApi service using retrofit
-         * @return : User Api service interface
-         */
-        fun create() : UserApi {
-            val build = Retrofit.Builder()
-                .baseUrl(baseURL)
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .client(OkHttpClient().newBuilder().apply {
-                    // add logging interceptor last to view others interceptors
-                    if (BuildConfig.DEBUG) {
-                        val logging = HttpLoggingInterceptor().also {
-                            it.level = HttpLoggingInterceptor.Level.BODY
-                        }
-                        this.addInterceptor(logging)
-                    }
-                }.build())
-                .build()
-            return build.create(UserApi::class.java)
+        // TODO: Instantiate an API object as follows to use within the app
+        fun create() : API {
+            return RetrofitAPI(baseURL)
         }
     }
 
-}
-
-/**
- * UserApi is service interface which deals with user list data
- */
-interface UserApi {
-    /**
-     * Function returns list of user list items asynchronously using 'Deferred'
-     */
-    @GET("users")
-    fun fetchUsersList() : Deferred<List<UsersListItem?>?>
 }
 
 // TODO: Create a data type representing users-list (according to expected JSON response)

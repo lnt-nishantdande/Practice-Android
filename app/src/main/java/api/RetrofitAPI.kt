@@ -8,14 +8,13 @@ import java.net.UnknownHostException
 // Note: Fetching users-list is the *only* use-case therefore avoid implementing unrelated,
 // extra, features no matter how common or useful they might be for potential future cases.
 //
-class RetrofitAPI() : API {
+class RetrofitAPI(private val usersListURL: String) : API {
 
     /**
      * Declare and Initialize user api service lazily whenever required
      */
-    private val userApiService by lazy {
-        API.create()
-    }
+    private val retrofit by lazy { NetworkModule.provideRetrofit(usersListURL) }
+    private val userApiService by lazy { NetworkModule.provideUserApi(retrofit) }
 
     override fun fetchUsersList(
         excludingUserWithID: String?,

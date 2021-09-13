@@ -22,11 +22,12 @@ class RetrofitAPI(private val usersListURL: String) : API {
     ) {
         // Create coroutine builder to call suspend function
         GlobalScope.launch(Dispatchers.IO) {
-            // Request to get data from 'users' endpoint
-            val req = userApiService.fetchUsersList()
 
-            // wait for response and handle api response using 'success' or 'failure' functions
             try {
+                // Request to get data from 'users' endpoint
+                val req = userApiService.fetchUsersList()
+
+                // wait for response and handle api response using 'success' or 'failure' functions
                 success.invoke(UsersList(req))
             } catch (e: Exception) {
                 e.printStackTrace()

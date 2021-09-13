@@ -1,6 +1,7 @@
 package com.example.practice
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -35,33 +36,56 @@ class MainActivity : ComponentActivity() {
         viewModel.fetchUserList()
 
         setContent {
-            // Set the default state i.e. Loading
-            val userDataState by viewModel.userDataState.observeAsState(MainActivityViewModel.UserDataState.Loading)
+            Column {
+                TopAppBar(
+                    elevation = 4.dp,
+                    title = {
+                        Text("User List")
+                    },
+                    backgroundColor = MaterialTheme.colors.primarySurface,
+                )
 
-            // Check current state of user data and show ui component accordingly
-            userDataState.let {
-                when (it) {
-                    is MainActivityViewModel.UserDataState.Loading -> {
-                        loadingUi()
-                    }
-                    is MainActivityViewModel.UserDataState.ShowUsers ->
-                    {
-                        it.usersList.let { items ->
-                            if (items != null && items.usersList?.isEmpty() == false)
-                                showUserListUi(usersListItems = items.usersList) {
-                                    viewModel.fetchUserList(excludingUserId = it)
-                                }
-                            else
-                                handleErrorMessage(fetchError = FetchError(IllegalArgumentException(), "No User Found"))
-                        }
-                    }
-                    is MainActivityViewModel.UserDataState.Error -> {
-                        handleErrorMessage(fetchError = it.fetchError)
-                    }
-                }
+                // Set the default state i.e. Loading
+                // No need to handle state specially for lazy column as
+                // 'observeAsState' remember state itself
+                val userDataState by viewModel.userDataState.observeAsState(MainActivityViewModel.UserDataState.Loading)
+
+                // Check current state of user data and show ui component accordingly
+                MainScreen(userDataState = userDataState)
             }
         }
 
+    }
+
+    /**
+     * Function check current state of user data and show ui component accordingly
+     * @param userDataState : User Data State
+     */
+    @Composable
+    fun MainScreen(userDataState: MainActivityViewModel.UserDataState){
+        when (userDataState) {
+            is MainActivityViewModel.UserDataState.Loading -> {
+                loadingUi()
+            }
+            is MainActivityViewModel.UserDataState.ShowUsers -> {
+                userDataState.usersList.let { items ->
+                    if (items != null && items.usersList?.isEmpty() == false)
+                        showUserListUi(usersListItems = items.usersList) {
+                            viewModel.fetchUserList(excludingUserId = it)
+                        }
+                    else
+                        handleErrorMessage(
+                            fetchError = FetchError(
+                                IllegalArgumentException(),
+                                "No User Found"
+                            )
+                        )
+                }
+            }
+            is MainActivityViewModel.UserDataState.Error -> {
+                handleErrorMessage(fetchError = userDataState.fetchError)
+            }
+        }
     }
 
     /**
@@ -69,14 +93,14 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     fun showUserListUi(usersListItems: List<UsersListItem?>?, onUserClickEvent: (String) -> Unit){
-        Column {
-            TopAppBar(
-                elevation = 4.dp,
-                title = {
-                    Text("User List")
-                },
-                backgroundColor = MaterialTheme.colors.primarySurface,
-            )
+//        Column {
+//            TopAppBar(
+//                elevation = 4.dp,
+//                title = {
+//                    Text("User List")
+//                },
+//                backgroundColor = MaterialTheme.colors.primarySurface,
+//            )
             usersListItems.let {
                 if (it?.isEmpty()!!) {
                     Text(text = "No User Found")
@@ -97,7 +121,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-            }
+//            }
         }
     }
 
@@ -109,7 +133,7 @@ class MainActivity : ComponentActivity() {
         Column(modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)) {
-            Text(text = "${fetchError.errorMessage!!}",
+            Text(text = fetchError.errorMessage!!,
                 style = MaterialTheme.typography.h4, textAlign = TextAlign.Center)
         }
     }
@@ -132,6 +156,7 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     fun showUserItemUi(usersListItem: UsersListItem, onUserClickEvent: (String) -> Unit){
+        Log.d("MainActivity", usersListItem.name!!)
         Box {
             Card(
                 shape = RoundedCornerShape(16.dp),

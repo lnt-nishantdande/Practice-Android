@@ -1,7 +1,6 @@
 package com.example.practice
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -93,14 +92,6 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     fun showUserListUi(usersListItems: List<UsersListItem?>?, onUserClickEvent: (String) -> Unit){
-//        Column {
-//            TopAppBar(
-//                elevation = 4.dp,
-//                title = {
-//                    Text("User List")
-//                },
-//                backgroundColor = MaterialTheme.colors.primarySurface,
-//            )
             usersListItems.let {
                 if (it?.isEmpty()!!) {
                     Text(text = "No User Found")
@@ -121,7 +112,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-//            }
         }
     }
 
@@ -156,7 +146,6 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     fun showUserItemUi(usersListItem: UsersListItem, onUserClickEvent: (String) -> Unit){
-        Log.d("MainActivity", usersListItem.name!!)
         Box {
             Card(
                 shape = RoundedCornerShape(16.dp),

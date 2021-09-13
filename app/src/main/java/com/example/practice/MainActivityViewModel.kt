@@ -1,5 +1,6 @@
 package com.example.practice
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -75,7 +76,11 @@ class MainActivityViewModel : ViewModel() {
             excludingUserId = id.toInt()
             val items = usersList?.filterNot {
                 it.let {
-                    it?.id?.equals(excludingUserId)!!
+                    System.out.println("Inside it.let")
+                    if (it?.id == null)
+                        false
+                    else
+                        it.id == excludingUserId
                 }
             }
             success.invoke(items)

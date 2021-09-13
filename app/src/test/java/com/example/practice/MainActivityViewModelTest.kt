@@ -64,4 +64,16 @@ class MainActivityViewModelTest {
             Assert.assertEquals(usersListExcludeUserOfIdOne, userListItems)
         }
     }
+
+    /**
+     * Function test use case when we exclude user when id is set null
+     * Expected Result : 'mReferenceUserListItems' List should have 9 items
+     * Actual Result : User List from 'excludeByUserId' api should have 9 items
+     */
+    @Test
+    fun test_main_activity_view_model_exclude_user_when_id_is_null(){
+        mMainActivityViewModel.excludeByUserId("1", null){ userListItems ->
+            Assert.assertEquals(null, userListItems)
+        }
+    }
 }

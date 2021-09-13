@@ -47,7 +47,7 @@ data class UsersListItem(
 	val company: Company? = null,
 
 	@field:SerializedName("id")
-	val id: Int? = null,
+	var id: Int = 0, // remove id integer nullable as id never be null. Set default value to '0'.
 
 	@field:SerializedName("email")
 	val email: String? = null,

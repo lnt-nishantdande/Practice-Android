@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import api.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * Class maintain user data using viewModel
@@ -50,7 +51,7 @@ class MainActivityViewModel : ViewModel() {
                     }
                     viewModelScope.launch(Dispatchers.Main) {
                         if (it.usersList.isNullOrEmpty()){
-                            _userDataState.value = UserDataState.Error(FetchError(IllegalArgumentException(), "Not Data Available"))
+                            _userDataState.value = UserDataState.Error(FetchError(Exception(), "Not Data Available"))
                         } else {
                             _userDataState.value = UserDataState.ShowUsers(it)
                         }
@@ -58,7 +59,9 @@ class MainActivityViewModel : ViewModel() {
                 }
             }
         }, {
-            _userDataState.value = UserDataState.Error(it)
+            viewModelScope.launch(Dispatchers.Main) {
+                _userDataState.value = UserDataState.Error(it)
+            }
         })
     }
 

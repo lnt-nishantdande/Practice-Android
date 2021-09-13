@@ -1,6 +1,6 @@
 package api
 
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.net.UnknownHostException
 
 
@@ -20,27 +20,18 @@ class RetrofitAPI(private val usersListURL: String) : API {
         success: (UsersList) -> Unit,
         failure: (FetchError) -> Unit
     ) {
-        // As we are making requesting using 'async',
-        // call must be made from coroutine hence api request
-        // is made from 'runBlocking' coroutine builder.
-        runBlocking {
+        // Create coroutine builder to call suspend function
+        GlobalScope.launch(Dispatchers.IO) {
             // Request to get data from 'users' endpoint
             val req = userApiService.fetchUsersList()
+
+            // wait for response and handle api response using 'success' or 'failure' functions
             try {
-                // wait for response and handle api response using 'success' or 'failure' functions
-                req.await().run {
-                    if (this != null){
-                        // Handle success response via 'success' function
-                        success.invoke(UsersList(this))
-                    } else {
-                        // Handle error response via 'failure' function
-                        failure.invoke(FetchError(IllegalArgumentException(), "No Data Found"))
-                    }
-                }
+                success.invoke(UsersList(req))
             } catch (e: Exception) {
                 e.printStackTrace()
                 // Case to handle various network errors
-                if (e is UnknownHostException){
+                if (e is UnknownHostException) {
                     // handle case when user has no internet connection
                     failure.invoke(FetchError(e, "Internet Not Available"))
                 } else {

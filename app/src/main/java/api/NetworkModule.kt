@@ -19,7 +19,7 @@ interface UserApi {
      * Function returns list of user list items asynchronously using 'Deferred'
      */
     @GET("users")
-    fun fetchUsersList() : Deferred<List<UsersListItem?>?>
+    suspend fun fetchUsersList() : List<UsersListItem?>?
 }
 
 /**

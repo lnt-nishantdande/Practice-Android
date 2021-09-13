@@ -10,6 +10,9 @@ import java.net.UnknownHostException
 //
 class RetrofitAPI(private val usersListURL: String) : API {
 
+    // Scope is create to to invoke coroutine and handle job
+    private val scope = CoroutineScope(Job() + Dispatchers.IO)
+
     /**
      * Declare and Initialize user api service lazily whenever required
      */
@@ -21,12 +24,10 @@ class RetrofitAPI(private val usersListURL: String) : API {
         failure: (FetchError) -> Unit
     ) {
         // Create coroutine builder to call suspend function
-        GlobalScope.launch(Dispatchers.IO) {
-
+        scope.launch(Dispatchers.IO) {
             try {
                 // Request to get data from 'users' endpoint
                 val req = userApiService.fetchUsersList()
-
                 // wait for response and handle api response using 'success' or 'failure' functions
                 success.invoke(UsersList(req))
             } catch (e: Exception) {

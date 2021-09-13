@@ -1,16 +1,5 @@
 package api
 
-import com.example.practice.BuildConfig
-import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Deferred
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import java.lang.Exception
-
 // A networking API used within the app.
 //
 // Implement the API using retrofit, ktor or any networking library of your choice
@@ -40,8 +29,12 @@ interface API {
         private const val baseURL = "https://jsonplaceholder.typicode.com/"
 
         // TODO: Instantiate an API object as follows to use within the app
+
+        // Create retrofit api instance
+        private val retrofitAPI by lazy { RetrofitAPI(baseURL) }
+
         fun create() : API {
-            return RetrofitAPI(baseURL)
+            return retrofitAPI
         }
     }
 

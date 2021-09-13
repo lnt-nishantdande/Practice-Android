@@ -76,7 +76,6 @@ class MainActivityViewModel : ViewModel() {
             excludingUserId = id.toInt()
             val items = usersList?.filterNot {
                 it.let {
-                    System.out.println("Inside it.let")
                     if (it?.id == null)
                         false
                     else

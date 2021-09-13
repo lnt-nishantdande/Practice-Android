@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                     else
                         handleErrorMessage(
                             fetchError = FetchError(
-                                IllegalArgumentException(),
+                                Exception(),
                                 "No User Found"
                             )
                         )

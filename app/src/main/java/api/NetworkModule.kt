@@ -32,8 +32,8 @@ object NetworkModule {
      * @param : retrofit instance
      * @return : User Api service interface
      */
-    fun provideUserApi(retrofit: Retrofit): UserApi {
-        return retrofit.create(UserApi::class.java)
+    fun provideUserApi(baseUrl : String): UserApi {
+        return provideRetrofit(baseUrl).create(UserApi::class.java)
     }
 
     /**
@@ -41,7 +41,7 @@ object NetworkModule {
      * @param baseUrl : provide base url in string
      * @return : retrofit instance
      */
-    fun provideRetrofit(baseUrl : String) : Retrofit {
+    private fun provideRetrofit(baseUrl : String) : Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))

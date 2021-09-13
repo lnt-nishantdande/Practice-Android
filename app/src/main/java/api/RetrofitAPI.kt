@@ -13,8 +13,7 @@ class RetrofitAPI(private val usersListURL: String) : API {
     /**
      * Declare and Initialize user api service lazily whenever required
      */
-    private val retrofit by lazy { NetworkModule.provideRetrofit(usersListURL) }
-    private val userApiService by lazy { NetworkModule.provideUserApi(retrofit) }
+    private val userApiService by lazy { NetworkModule.provideUserApi(usersListURL) }
 
     override fun fetchUsersList(
         excludingUserWithID: String?,
